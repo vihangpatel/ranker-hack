@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import CellInput from './input'
 
-import { navigateSheet } from './utils'
+import { navigateSheet, breakId } from '../utils'
 
 
 const Cell = ({ id, cellValue }) => {

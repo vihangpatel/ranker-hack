@@ -4,3 +4,21 @@
     border-collapse: collapse;
 
 }
+
+.sheet-table table col {
+    width: 80px;
+}
+
+.sheet-table table thead th {
+    
+    display: block;
+    background: rgb(248, 249, 250);
+    font-weight: 100;
+    font-size: 12px;   
+    line-height: 22px; 
+    border: 1px solid rgba(0,0,0,0.65);
+}
+
+.sheet-table table thead tr {
+    display: inline-flex;
+}
