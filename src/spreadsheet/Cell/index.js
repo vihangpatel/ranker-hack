@@ -31,9 +31,6 @@ const Cell = ({ id, cellValue }) => {
 
 
     const onKeyDown = event => {
-
-
-        console.log('td clickc')
         switch (true) {
             case !editable && [37, 38, 39, 40].indexOf(event.keyCode) > -1: {
                 onEditFinish({ value })

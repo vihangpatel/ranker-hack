@@ -5,10 +5,7 @@ import { SUGGESTIONS } from './constants'
 
 
 const Suggestions = ({ value }) => {
-
-    console.log(SUGGESTIONS.filter(_ => _.command
-        .toLowerCase().indexOf(value.toLowerCase()) > -1))
-
+    
     return <div className="autosuggestion-box">
         {SUGGESTIONS.filter(_ => _.command
             .toLowerCase().indexOf(value.toLowerCase()) > -1)

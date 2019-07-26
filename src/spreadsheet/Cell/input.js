@@ -15,9 +15,6 @@ const CellInput = ({ cellValue, onEditFinish }) => {
     })
 
     const onKeyPress = event => {
-
-        console.log('cell press')
-
         if (event.which === 13 || [13].indexOf(event.keyCode) > -1) {
             onBlur()
             // Return on pressing enter
@@ -33,7 +30,6 @@ const CellInput = ({ cellValue, onEditFinish }) => {
     }
 
     const onKeyDown = event => {
-        console.log('cell down')
         if ([27].indexOf(event.keyCode) > -1) {
             onBlur()
             return
