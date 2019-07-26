@@ -3,7 +3,6 @@
 class SheetData {
 
     constructor() {
-        super()
 
         this.cellMeta = {}
     }
@@ -29,14 +28,14 @@ class SheetData {
             switch (type) {
                 case "SUM":
                     {
-                        (cells || []).map( _ => 1)
+                        (cells || []).map(_ => 1)
                     }
                 case "AVERAGE":
                     {
 
                     }
                 default:
-                    b
+                    break;
             }
         } else {
             value = matchingCellMeta.value

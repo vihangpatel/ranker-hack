@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import CellInput from './input'
 
-import { navigateSheet, breakId } from '../utils'
+import { navigateSheet } from '../utils'
+import sheetDataInstance from '../store'
 
 
 const Cell = ({ id, cellValue }) => {
@@ -81,11 +82,20 @@ const Cell = ({ id, cellValue }) => {
         setValue(value)
         setEditable(false)
         navigateSheet({ id, keyCode: 40 })
+        commitValueToStore({ value })
+    }
+
+    const commitValueToStore = ({ value }) => {
+        sheetDataInstance.setCellValue(id, {
+            text: value
+        })
+        console.log('commited id: ', id, ' value: ', value)
     }
 
 
 
     return <td tabIndex={0} id={`cell-${id}`} ref={tdRef}
+        onBlur={() => commitValueToStore({ value })}
         onKeyDown={onKeyDown}
     >
         {
