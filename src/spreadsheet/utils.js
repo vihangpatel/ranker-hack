@@ -1,49 +1,209 @@
-
-
 export const navigateSheet = ({ id, keyCode }) => {
-    const td = document.querySelector(`#cell-${id}`)
-    const { row, col } = breakId(id)
-    let nexttd = null
+    const td = document.querySelector(`#cell-${id}`);
+    const { row, col } = breakId(id);
+    let nexttd = null;
     const idMap = {
         37: `${row}-${col - 1}`,
         38: `${row - 1}-${col}`,
         39: `${row}-${col + 1}`,
-        40: `${row + 1}-${col}`,
-    }
+        40: `${row + 1}-${col}`
+    };
     if (td && row.toString() && col.toString()) {
-        nexttd = document.querySelector(`td#cell-${idMap[keyCode]}`)
-        nexttd && nexttd.focus()
+        nexttd = document.querySelector(`td#cell-${idMap[keyCode]}`);
+        nexttd && nexttd.focus();
     }
+};
+
+export const highlightCell = ({ id, bHighlight }) => {
+
+    const cellToHightlight = document.querySelector(`#cell-${id}`)
+    const innerCellDiv = cellToHightlight && cellToHightlight.children && cellToHightlight.children[0]
+
+    if (innerCellDiv) {
+        if (bHighlight) {
+            innerCellDiv.classList.add('highlight')
+        } else {
+            innerCellDiv.classList.remove('highlight')
+        }
+
+        return true
+    }
+
+    return false
 }
+
 
 export const breakId = id => {
-    const [row, col] = (typeof id === 'string' ? id.replace('cell', '') : '').split('-')
-    return { row: +row, col: +col }
-}
+    const [row, col] = (typeof id === "string"
+        ? id.replace("cell", "")
+        : ""
+    ).split("-");
+    return { row: +row, col: +col };
+};
 
-const availableSymbols = [...Array(26)].map((_, __) => String.fromCharCode(65 + __)) // Get all the symbols from A,B,C,D ... Z
-const TARGET_BASE = availableSymbols.length
+const availableSymbols = [...Array(26)].map((_, __) =>
+    String.fromCharCode(65 + __)
+); // Get all the symbols from A,B,C,D ... Z
+const TARGET_BASE = availableSymbols.length;
 
-const cache = {}
+const cache = {};
 
 export const convertToABCD = row => {
-    let output = ''
+    let output = "";
 
     // Cache the row to Char Column calculation
     if (cache[row]) {
-        return cache[row]
+        return cache[row];
     }
 
     do {
-        const divisionedRow = row / TARGET_BASE
-        const isExactInteger = divisionedRow === parseInt(divisionedRow) && divisionedRow !== 0
-        const modulo = isExactInteger ? TARGET_BASE : Math.max(row % TARGET_BASE, 0)
-        output = availableSymbols[modulo] + output
-        row = row % TARGET_BASE === 0 ? parseInt(divisionedRow) - 1 : parseInt(divisionedRow)
-    } while (row > 0)
+        const divisionedRow = row / TARGET_BASE;
+        const isExactInteger =
+            divisionedRow === parseInt(divisionedRow, 10) && divisionedRow !== 0;
+        const modulo = isExactInteger
+            ? TARGET_BASE
+            : Math.max(row % TARGET_BASE, 0);
+        output = availableSymbols[modulo] + output;
+        row =
+            row % TARGET_BASE === 0
+                ? parseInt(divisionedRow, 10) - 1
+                : parseInt(divisionedRow, 10);
+    } while (row > 0);
 
     // cache to avoid calculation next time
-    cache[row] = output
+    cache[row] = output;
 
-    return output
+    return output;
+};
+
+export const handleRange = (startCellId, endCellId) => {
+    const startCell = extractCellId(startCellId);
+    const endCell = extractCellId(endCellId);
+
+    let sx = convertToIndex(startCell.col);
+    let sy = +startCell.row - 1;
+
+    let ex = convertToIndex(endCell.col);
+    let ey = +endCell.row - 1;
+
+    if (sx > ex) {
+        // swap cols
+        let t = sx;
+        sx = ex;
+        ex = t;
+    }
+
+    if (sy > ey) {
+        let t = sy;
+        sy = ey;
+        ey = t;
+    }
+
+    const selectedCells = [];
+
+    for (let i = sy; i <= ey; i++) {
+        for (let j = sx; j <= ex; j++) {
+            selectedCells.push(`${i}-${j}`);
+        }
+    }
+
+    return selectedCells;
+};
+
+export const convertToIndex = str => {
+    let i = str.length - 1,
+        j = 0,
+        result = 0;
+    do {
+        result =
+            result +
+            (availableSymbols.indexOf(str[i].toUpperCase()) + 1) *
+            Math.pow(TARGET_BASE, j);
+        i--;
+        j++;
+    } while (i >= 0);
+
+    return result - 1;
+};
+
+export const getIndexFromZero = index => Math.max(0, +index - 1);
+
+export const CELL_ID_REGEX = /((^[a-zA-Z]+)([0-9]+)$)/g;
+
+export const extractCellId = cellId => {
+    const CELL_ID_REGEX = new RegExp(/((^[a-zA-Z]+)([0-9]+)$)/g);
+    const regexMatch = CELL_ID_REGEX.exec(cellId);
+    if (regexMatch && regexMatch[2] && regexMatch[3]) {
+        return {
+            row: regexMatch[3],
+            col: regexMatch[2]
+        };
+    }
+
+    return null;
+};
+
+
+
+export const parseCell = str => {
+    const EXPRESSION_REGEX = /=(SUM|AVERAGE|POWER)+((.?)*)/g
+    const parsedOp = EXPRESSION_REGEX.exec(str.replace(/\s*/g, ""));
+
+
+    // for e.g. sum operation 
+    /**
+     * cellValue = {
+     *    text: "=sum(B1:C5,10,20)",
+     *    command: {
+     *        "type": "sum",
+     *        "cells": ['1-1', '1-2','1-3','1-4', ...],
+     *        "staticVal": 24
+     *    }
+     * }
+     */
+    let cellValue = {
+        text: str
+    }
+
+    str = str.toUpperCase()
+
+    // for e.g. parsedOp =>[ "=sum(A10:A11,A10,20,30)", "sum" , "(A10:A11,A10,20,30)" ]
+    if (parsedOp && parsedOp[1] && parsedOp[2]) {
+
+        const results = parsedOp[2]
+            .replace(/\(|\)/g, "")
+            .split(",")
+            .reduce(
+                (result, _) => {
+                    let range = _.split(":");
+
+                    switch (true) {
+                        case range && range.length >= 2: {
+                            result.cells = result.cells.concat(
+                                handleRange(range[0], range[1])
+                            );
+                            break;
+                        }
+                        case new RegExp(CELL_ID_REGEX).exec(_): {
+                            result.cells.push(_);
+                            break;
+                        }
+                        default: {
+                            if (!isNaN(_)) {
+                                result.staticVal += +_;
+                            }
+                        }
+                    }
+
+                    return result;
+                },
+                { cells: [], staticVal: 0 }
+            );
+
+        cellValue.command = {
+            type: parsedOp[1],
+            ...results
+        }
+    }
+    return cellValue;
 }

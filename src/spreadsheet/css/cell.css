@@ -19,6 +19,10 @@
     font-size: 12px;
 }
 
+.sheet-table .sheet-body td .cell.highlight {
+    border: 1px dashed brown;
+}
+
 .sheet-table .sheet-body td .square-handle {
     display: none;
     position: absolute;

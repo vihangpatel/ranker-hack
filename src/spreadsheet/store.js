@@ -7,28 +7,29 @@ class SheetData {
         this.cellMeta = {}
     }
 
-    setCellValue(id, value, option = {}) {
+    setCellValue(id, option = {}) {
         !this.cellMeta && (this.cellMeta = {})
-        this.cellMeta[id] = {
-            text: value,
-            command: {
-                ...(option.command ? {
-                    type: option.command.type,
-                    cells: [...option.command.cells]
-                } : {})
-            }
-        }
+        this.cellMeta[id] = { ...option }
+        console.log(this.cellMeta[id])
     }
 
     evaluateCell(id) {
         const matchingCellMeta = this.cellMeta[id]
+
+        if(!matchingCellMeta) {
+            return ''
+        }
+
         let value = ''
         if (matchingCellMeta && matchingCellMeta.command) {
             const { type, cells } = matchingCellMeta.command
             switch (type) {
                 case "SUM":
                     {
-                        (cells || []).map(_ => 1)
+                        value = (cells || []).reduce((result, cellId) => {
+                            result = result + +this.getCellValue(cellId)
+                            return result
+                        }, 0)
                     }
                 case "AVERAGE":
                     {
@@ -38,7 +39,7 @@ class SheetData {
                     break;
             }
         } else {
-            value = matchingCellMeta.value
+            value = matchingCellMeta.text
         }
 
         return value
@@ -54,9 +55,7 @@ class SheetData {
 
     getCellValue(id) {
 
-        const matchingCellMeta = this.cellMeta[id]
-
-
+        return this.evaluateCell(id)
     }
 }
 

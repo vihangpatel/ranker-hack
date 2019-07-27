@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import CellInput from './input'
 
-import { navigateSheet } from '../utils'
+import { navigateSheet, parseCell, highlightCell } from '../utils'
 import sheetDataInstance from '../store'
 
 
@@ -83,19 +83,34 @@ const Cell = ({ id, cellValue }) => {
         setEditable(false)
         navigateSheet({ id, keyCode: 40 })
         commitValueToStore({ value })
+
+        setTimeout(() => highlightCells(true), 5)
+
+    }
+
+    const highlightCells = bHighlight => {
+        const { command } = parseCell(value)
+
+        if (command && command.cells instanceof Array) {
+            command.cells.map(id => highlightCell({ id, bHighlight }))
+        }
     }
 
     const commitValueToStore = ({ value }) => {
-        sheetDataInstance.setCellValue(id, {
-            text: value
-        })
+        sheetDataInstance.setCellValue(id, parseCell(value))
+
+        highlightCells(false)
+
         console.log('commited id: ', id, ' value: ', value)
     }
 
 
+    const parsedValue = parseCell(value)
+
 
     return <td tabIndex={0} id={`cell-${id}`} ref={tdRef}
         onBlur={() => commitValueToStore({ value })}
+        onFocus={() => highlightCells(true)}
         onKeyDown={onKeyDown}
     >
         {
@@ -104,7 +119,7 @@ const Cell = ({ id, cellValue }) => {
                     onClick={clickHandler()}
 
                 >
-                    {value}
+                    {parsedValue && parsedValue.command ? sheetDataInstance.getCellValue(id) : value}
                 </div>
         }
 
