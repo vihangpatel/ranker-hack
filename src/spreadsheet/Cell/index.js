@@ -10,7 +10,6 @@ const Cell = ({ id, cellValue }) => {
     const tdRef = React.createRef()
     const [value, setValue] = useState(cellValue)
     const [editable, setEditable] = useState(false)
-    const [editableDiv, setEditableDiv] = useState(false)
 
 
     const clickHandler = () => {
@@ -36,19 +35,18 @@ const Cell = ({ id, cellValue }) => {
             case !editable && [37, 38, 39, 40].indexOf(event.keyCode) > -1: {
                 onEditFinish({ value })
                 navigateSheet({ id, keyCode: event.keyCode })
+                event.preventDefault()
                 return
             }
 
             case [13].indexOf(event.keyCode) > -1 || event.which === 13: {
-                if (editableDiv) {
-                    onEditFinish({ value })
-                    setEditableDiv(false)
-                } else {
-                    setValue(value + String.fromCharCode(event.keyCode))
-                    tdRef.current.blur()
+                if (!editable) {
                     setEditable(true)
+                } else {
+                    setEditable(false)
+                    onEditFinish({ value })
+                    navigateSheet({ id, keyCode: 40 })
                 }
-
                 return
             }
 
@@ -69,7 +67,6 @@ const Cell = ({ id, cellValue }) => {
             default: {
 
                 if (!editable) {
-                    setEditableDiv(false)
                     setValue(value + String.fromCharCode(event.keyCode))
                     setEditable(true)
                 }
@@ -82,7 +79,6 @@ const Cell = ({ id, cellValue }) => {
     const onEditFinish = ({ value }) => {
         setValue(value)
         setEditable(false)
-        navigateSheet({ id, keyCode: 40 })
         commitValueToStore({ value })
 
         setTimeout(() => highlightCells(true), 5)
