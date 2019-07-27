@@ -16,7 +16,7 @@ class SheetData {
     evaluateCell(id) {
         const matchingCellMeta = this.cellMeta[id]
 
-        if(!matchingCellMeta) {
+        if (!matchingCellMeta) {
             return ''
         }
 
@@ -30,10 +30,17 @@ class SheetData {
                             result = result + +this.getCellValue(cellId)
                             return result
                         }, 0)
+                        break;
                     }
                 case "AVERAGE":
                     {
+                        value = (cells || []).reduce((result, cellId) => {
+                            result = result + +this.getCellValue(cellId)
+                            return result
+                        }, 0)
 
+                        value = value / (cells || []).length
+                        break;
                     }
                 default:
                     break;

@@ -69,8 +69,9 @@ const Cell = ({ id, cellValue }) => {
             default: {
 
                 if (!editable) {
-                    setEditableDiv(true)
+                    setEditableDiv(false)
                     setValue(value + String.fromCharCode(event.keyCode))
+                    setEditable(true)
                 }
             }
         }
