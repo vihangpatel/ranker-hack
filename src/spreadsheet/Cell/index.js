@@ -111,13 +111,12 @@ const Cell = ({ id, cellValue }) => {
     }
 
     const onBlur = () => {
-        editable && setEditable(false)
-        console.log('td blur')
-        highlightCells(true)
+        //highlightCells(false)
     }
 
 
     return <td tabIndex={0} id={`cell-${id}`} ref={tdRef}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
     >
         {

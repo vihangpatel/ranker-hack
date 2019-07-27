@@ -66,5 +66,7 @@ class SheetData {
     }
 }
 
+window._test = new SheetData()
+
 // Return singleton instance
-export default new SheetData()
+export default window._test

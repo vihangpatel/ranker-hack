@@ -59,16 +59,16 @@ export const convertToABCD = row => {
     do {
         const divisionedRow = row / TARGET_BASE;
         const isExactInteger =
-            divisionedRow === parseInt(divisionedRow, 10) && divisionedRow !== 0;
+            divisionedRow === parseInt(divisionedRow, 10) && divisionedRow != 0;
         const modulo = isExactInteger
-            ? TARGET_BASE
+            ? 0
             : Math.max(row % TARGET_BASE, 0);
         output = availableSymbols[modulo] + output;
         row =
             row % TARGET_BASE === 0
                 ? parseInt(divisionedRow, 10) - 1
-                : parseInt(divisionedRow, 10);
-    } while (row > 0);
+                : parseInt(divisionedRow, 10) - 1;
+    } while (row >= 0);
 
     // cache to avoid calculation next time
     cache[row] = output;
@@ -128,7 +128,6 @@ export const convertToIndex = str => {
 
 export const getIndexFromZero = index => Math.max(0, +index - 1);
 
-export const CELL_ID_REGEX = /((^[a-zA-Z]+)([0-9]+)$)/g;
 
 export const extractCellId = cellId => {
     const CELL_ID_REGEX = new RegExp(/((^[a-zA-Z]+)([0-9]+)$)/g);
@@ -146,8 +145,10 @@ export const extractCellId = cellId => {
 
 
 export const parseCell = str => {
-    const EXPRESSION_REGEX = /=(SUM|AVERAGE|POWER|sum|average|power)+((.?)*)/g
-    const parsedOp = EXPRESSION_REGEX.exec(str.replace(/\s*/g, ""));
+
+    const CELL_ID_REGEX = "((^[a-zA-Z]+)([0-9]+)$)";
+    const EXPRESSION_REGEX = "=(SUM|AVERAGE|POWER|sum|average|power)+((.?)*)"
+    const parsedOp = new RegExp(EXPRESSION_REGEX, 'g').exec(str.replace(/\s*/g, ""))
 
 
     // for e.g. sum operation 
@@ -177,6 +178,11 @@ export const parseCell = str => {
                 (result, _) => {
                     let range = _.split(":");
 
+
+                    if (!!new RegExp(CELL_ID_REGEX.toString(), 'gm').exec(_)) {
+                        result.cells = result.cells.concat(handleRange(_, _))
+                    }
+
                     switch (true) {
                         case range && range.length >= 2: {
                             result.cells = result.cells.concat(
@@ -184,10 +190,7 @@ export const parseCell = str => {
                             );
                             break;
                         }
-                        case new RegExp(CELL_ID_REGEX).exec(_): {
-                            result.cells.push(_);
-                            break;
-                        }
+
                         default: {
                             if (!isNaN(_)) {
                                 result.staticVal += +_;
