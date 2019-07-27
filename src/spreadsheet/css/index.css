@@ -9,9 +9,7 @@
     width: 80px;
 }
 
-.sheet-table table thead th {
-    
-    display: block;
+.sheet-table table  th {
     background: rgb(248, 249, 250);
     font-weight: 100;
     font-size: 12px;   

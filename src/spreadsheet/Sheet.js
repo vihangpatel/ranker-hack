@@ -6,23 +6,19 @@ import { convertToABCD } from './utils'
 
 const Sheet = ({ cols, rows }) => {
 
-    const bodyRef = React.createRef()
-    const headRef = React.createRef()
 
-   
+
 
     return <div className='sheet-body'>
         <div className="sheet-area">
             <table>
-                <thead ref={headRef}>
+                <tbody>
                     <tr>
                         {
 
                             [...Array(cols)].map((_, colIndex) => <th key={colIndex} id={`th-${colIndex}`}>{convertToABCD(colIndex)}</th>)
                         }
                     </tr>
-                </thead>
-                <tbody ref={bodyRef}>
                     {[...Array(rows)].map((_, rowIndex) => {
 
 
