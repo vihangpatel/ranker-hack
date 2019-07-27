@@ -10,12 +10,16 @@ const CellInput = ({ cellValue, onEditFinish }) => {
 
     const [showSuggestions, setShowSuggestions] = useState(false)
 
-    const onBlur = () => onEditFinish({
-        value: inputRef.current.value
-    })
-
+    const onBlur = (keyCode = 40) => {
+        console.log('cell down')
+        onEditFinish({
+            value: inputRef.current.value,
+            keyCode
+        })
+    }
     const onKeyPress = event => {
-        if (event.which === 13 || [13].indexOf(event.keyCode) > -1) {
+        console.log('cell press')
+        if (event.which === 13 || [9, 13].indexOf(event.keyCode) > -1) {
             onBlur()
             // Return on pressing enter
             return
@@ -30,8 +34,10 @@ const CellInput = ({ cellValue, onEditFinish }) => {
     }
 
     const onKeyDown = event => {
-        if ([27].indexOf(event.keyCode) > -1) {
-            onBlur()
+        console.log('cell down')
+        if ([9, 27].indexOf(event.keyCode) > -1) {
+            onBlur(39)
+            event.preventDefault()
             return
         }
     }

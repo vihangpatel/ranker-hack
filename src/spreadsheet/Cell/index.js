@@ -31,9 +31,13 @@ const Cell = ({ id, cellValue }) => {
 
 
     const onKeyDown = event => {
+        console.log('\n\n\n td down ', event.keyCode)
         switch (true) {
+            case event.keyCode === 9: {
+                setEditable(false)
+                return
+            }
             case !editable && [37, 38, 39, 40].indexOf(event.keyCode) > -1: {
-                onEditFinish({ value })
                 navigateSheet({ id, keyCode: event.keyCode })
                 event.preventDefault()
                 return
@@ -42,10 +46,6 @@ const Cell = ({ id, cellValue }) => {
             case [13].indexOf(event.keyCode) > -1 || event.which === 13: {
                 if (!editable) {
                     setEditable(true)
-                } else {
-                    setEditable(false)
-                    onEditFinish({ value })
-                    navigateSheet({ id, keyCode: 40 })
                 }
                 return
             }
@@ -55,7 +55,7 @@ const Cell = ({ id, cellValue }) => {
                 return
             }
 
-            case ([9, 16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 45].indexOf(event.keyCode) > -1): {
+            case ([16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 45].indexOf(event.keyCode) > -1): {
                 return
             }
 
@@ -76,10 +76,11 @@ const Cell = ({ id, cellValue }) => {
         !editable && event.keyCode === 32 && event.preventDefault()
     }
 
-    const onEditFinish = ({ value }) => {
+    const onEditFinish = ({ value, keyCode = 40 }) => {
         setValue(value)
         setEditable(false)
         commitValueToStore({ value })
+        navigateSheet({ id, keyCode })
 
         setTimeout(() => highlightCells(true), 5)
 
@@ -104,10 +105,19 @@ const Cell = ({ id, cellValue }) => {
 
     const parsedValue = parseCell(value)
 
+    const onFocus = () => {
+        console.log('td focus')
+        commitValueToStore({ value })
+    }
+
+    const onBlur = () => {
+        editable && setEditable(false)
+        console.log('td blur')
+        highlightCells(true)
+    }
+
 
     return <td tabIndex={0} id={`cell-${id}`} ref={tdRef}
-        onBlur={() => commitValueToStore({ value })}
-        onFocus={() => highlightCells(true)}
         onKeyDown={onKeyDown}
     >
         {
