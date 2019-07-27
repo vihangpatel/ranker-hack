@@ -22,14 +22,14 @@ class SheetData {
 
         let value = ''
         if (matchingCellMeta && matchingCellMeta.command) {
-            const { type, cells } = matchingCellMeta.command
+            const { type, cells, staticVal } = matchingCellMeta.command
             switch (type) {
                 case "SUM":
                     {
-                        value = (cells || []).reduce((result, cellId) => {
+                        value =  + (cells || []).reduce((result, cellId) => {
                             result = result + +this.getCellValue(cellId)
                             return result
-                        }, 0)
+                        }, +staticVal)
                         break;
                     }
                 case "AVERAGE":
@@ -37,7 +37,7 @@ class SheetData {
                         value = (cells || []).reduce((result, cellId) => {
                             result = result + +this.getCellValue(cellId)
                             return result
-                        }, 0)
+                        }, +staticVal)
 
                         value = value / (cells || []).length
                         break;

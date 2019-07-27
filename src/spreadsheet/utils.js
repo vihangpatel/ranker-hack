@@ -146,7 +146,7 @@ export const extractCellId = cellId => {
 
 
 export const parseCell = str => {
-    const EXPRESSION_REGEX = /=(SUM|AVERAGE|POWER)+((.?)*)/g
+    const EXPRESSION_REGEX = /=(SUM|AVERAGE|POWER|sum|average|power)+((.?)*)/g
     const parsedOp = EXPRESSION_REGEX.exec(str.replace(/\s*/g, ""));
 
 
