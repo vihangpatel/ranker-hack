@@ -10,6 +10,13 @@ const Sheet = ({ cols, rows }) => {
 
 
     return <div className='sheet-body'>
+        <div className="sheet-header">
+            <table>
+                <tbody>
+                    
+                </tbody>
+            </table>
+        </div>
         <div className="sheet-area">
             <table>
                 <tbody>
