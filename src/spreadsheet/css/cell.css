@@ -3,7 +3,7 @@
 .sheet-table .sheet-body td {
     border: 1px solid rgba(0,0,0,0.2);
     position: relative;
-    font-weight: 100;
+    font-weight: 400;
 }
 
 .sheet-table .sheet-body td:focus {
@@ -12,11 +12,12 @@
 }
 
 .sheet-table .sheet-body td .cell {
-    min-height: 22px;
-    min-width: 80px;
+    min-height: 18px;
+    min-width: 120px;
     position: relative;
     line-height: 22px;
-    font-size: 12px;
+    font-size: 14px;
+    text-align: right;
 }
 
 .sheet-table .sheet-body td .cell.highlight {

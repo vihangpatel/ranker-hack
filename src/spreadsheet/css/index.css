@@ -12,9 +12,10 @@
 .sheet-table table  th {
     background: rgb(248, 249, 250);
     font-weight: 100;
-    font-size: 12px;   
-    line-height: 22px; 
-    border: 1px solid rgba(0,0,0,0.65);
+    font-size: 11px;
+    line-height: 22px;
+    border: 1px solid rgba(0,0,0,0.35);
+    color: rgba(0,0,0,0.65);
 }
 
 .sheet-table table thead tr {
