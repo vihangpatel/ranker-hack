@@ -101,17 +101,19 @@ class SheetData {
 
         let value = ''
         if (matchingCellMeta && matchingCellMeta.command) {
-            const { type, cells, staticVal, staticArgsCount } = matchingCellMeta.command
+            const { type, cells, staticVal } = matchingCellMeta.command
             switch (type) {
                 case "SUM":
                     {
-                        if (cells && cells.length > 0) {
-                            value = (cells || []).reduce((result, cellId) => {
-                                const evaluatedVal = cellId !== id ? +this.getCellValue(cellId) : 0
-                                result = result + (!isNaN(evaluatedVal) ? evaluatedVal : 0)
-                                return result
-                            }, staticVal.reduce((sum, val) => sum + +val, 0))
-                        } else {
+
+                        value = (cells || []).reduce((result, cellId) => {
+                            const evaluatedVal = cellId !== id ? +this.getCellValue(cellId) : 0
+                            result = result + (!isNaN(evaluatedVal) ? evaluatedVal : 0)
+                            return result
+                        }, staticVal.reduce((sum, val) => sum + +val, 0))
+
+
+                        if (cells.length === 0 && staticVal.length === 0) {
                             value = '#ERROR'
                         }
 
@@ -128,13 +130,23 @@ class SheetData {
                         value = value / ((cells || []).length + staticVal.length)
 
                         // If static args count is zero, or no cells are there 
-                        if (staticArgsCount === 0 && cells && cells.length === 0) {
+                        if (staticVal.length === 0 && cells && cells.length === 0) {
                             value = '#ERROR'
                         }
                         break;
                     }
                 case "POW":
                 case "POWER": {
+                    const { expoCel, baseCel, expo, base, error } = matchingCellMeta.command
+                    console.log(matchingCellMeta.command)
+                    if (error || expoCel === id || baseCel === id) {
+                        value = '#ERROR'
+                    } else {        
+                        let expoVal = expoCel ? +this.getCellValue(expoCel) : expo
+                        let baseVal = baseCel ? +this.getCellValue(baseCel) : base
+
+                        value = Math.pow(+expoVal, +baseVal)
+                    }
                     break;
                 }
                 default:

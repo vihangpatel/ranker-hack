@@ -153,8 +153,8 @@ export const extractCellId = cellId => {
 export const parseCell = str => {
 
     const CELL_ID_REGEX = "((^[a-zA-Z]+)([0-9]+)$)";
-    const EXPRESSION_REGEX = "^=\s*(sum|power|average)\s*\((.*)\)"
-    const parsedOp = new RegExp(EXPRESSION_REGEX, 'g').exec(str.replace(/\s*/g, ""))
+    const EXPRESSION_REGEX = "^=\s*(sum|power|average|pow)\s*\((.*)\)"
+    const parsedOp = new RegExp(EXPRESSION_REGEX, 'g').exec(str.toLowerCase().replace(/\s*/g, ""))
 
 
     // for e.g. sum operation 
@@ -183,36 +183,72 @@ export const parseCell = str => {
 
         let results = []
 
-        results = args
-            .reduce(
-                (result, _) => {
-                    let range = _.split(":");
+        console.log(parsedOp[1])
+
+        switch (true) {
+            case ['sum', 'average'].indexOf(parsedOp[1]) > -1: {
+                results = args
+                    .reduce(
+                        (result, _) => {
+                            let range = _.split(":");
 
 
-                    if (!!new RegExp(CELL_ID_REGEX.toString(), 'gm').exec(_)) {
-                        result.cells = result.cells.concat(handleRange(_, _))
-                    }
-
-                    switch (true) {
-                        // evaluate range
-                        case range && range.length >= 2: {
-                            result.cells = result.cells.concat(
-                                handleRange(range[0], range[1])
-                            );
-                            break;
-                        }
-
-                        default: {
-                            if (!isNaN(_)) {
-                                result.staticVal.push(_);
+                            if (!!new RegExp(CELL_ID_REGEX.toString(), 'gm').exec(_)) {
+                                result.cells = result.cells.concat(handleRange(_, _))
                             }
-                        }
-                    }
 
-                    return result;
-                },
-                { cells: [], staticVal: [] }
-            );
+                            switch (true) {
+                                // evaluate range
+                                case range && range.length >= 2: {
+                                    result.cells = result.cells.concat(
+                                        handleRange(range[0], range[1])
+                                    );
+                                    break;
+                                }
+
+                                default: {
+                                    if (!isNaN(_)) {
+                                        result.staticVal.push(_);
+                                    }
+                                }
+                            }
+
+                            return result;
+                        },
+                        { cells: [], staticVal: [] }
+                    );
+                break
+            }
+
+            case parsedOp[1] === 'pow':
+            case parsedOp[1] === 'power': {
+                console.log(args)
+                // it needs only 2 arguments, mapped with base and exponent
+                if (args.length === 2) {
+                    results = args.reduce((result, _, index) => {
+                        if (!!new RegExp(CELL_ID_REGEX.toString(), 'gm').exec(_)) {
+                            // If it is cell, extract cell id in different result
+                            const { row, col } = extractCellId(_)
+                            let x = convertToIndex(col);
+                            let y = +row - 1;
+
+                            result.cells.push(`${y}-${x}`)
+                            index === 0 ? result.expoCel = `${y}-${x}` : result.baseCel = `${y}-${x}`
+                        }
+                        if (!isNaN(_)) {
+                            // If it is number, extract it in number
+                            index === 0 ? result.expo = _ : result.base = _
+                        }
+                        return result
+
+                    }, { cells: [] })
+                } else {
+                    results = { error: 'error' }
+                }
+            }
+        }
+
+
 
 
         cellValue.command = {
