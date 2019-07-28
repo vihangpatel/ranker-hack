@@ -10,7 +10,10 @@ const Cell = ({ id, cellValue }) => {
     const tdRef = React.createRef()
     const [value, setValue] = useState(cellValue)
     const [editable, setEditable] = useState(false)
+    const [timeStamp, setTimeStamp] = useState(Date.now())
 
+    // Just to avoid linting problems
+    void timeStamp
 
     const clickHandler = () => {
         let clicks = 0, timeout;
@@ -95,11 +98,15 @@ const Cell = ({ id, cellValue }) => {
     }
 
     const commitValueToStore = ({ value }) => {
-        sheetDataInstance.setCellValue(id, parseCell(value))
+
+        const parsedValuesObj = {
+            ...parseCell(value),
+            callback: () => setTimeStamp(Date.now())
+        }
+
+        sheetDataInstance.setCellValue(id, parsedValuesObj)
 
         highlightCells(false)
-
-        console.log('commited id: ', id, ' value: ', value)
     }
 
 
