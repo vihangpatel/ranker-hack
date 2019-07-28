@@ -82,6 +82,10 @@ export const handleRange = (startCellId, endCellId) => {
     const startCell = extractCellId(startCellId);
     const endCell = extractCellId(endCellId);
 
+    if(!startCell || !endCell) {
+        return []
+    }
+
     let sx = convertToIndex(startCell.col);
     let sy = +startCell.row - 1;
 
