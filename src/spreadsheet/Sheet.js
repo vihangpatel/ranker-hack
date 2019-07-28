@@ -4,6 +4,7 @@ import Cell from '../spreadsheet/Cell'
 import Header from '../spreadsheet/Header'
 
 import { convertToABCD } from './utils'
+import sheetInstance from './store'
 
 const Sheet = ({ cols, rows }) => {
 
@@ -36,7 +37,7 @@ const Sheet = ({ cols, rows }) => {
                                     return <Cell
                                         key={id}
                                         id={id}
-                                        cellValue="" />
+                                        cellValue={(sheetInstance.cellMeta[id] || {}).text} />
                                 })
                             }
                         </tr>

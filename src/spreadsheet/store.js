@@ -1,11 +1,12 @@
+import { catchClause } from "@babel/types";
 
 
 class SheetData {
 
-    constructor() {
+    constructor(props) {
 
-        this.cellMeta = {}
-        this.depsMap = {}
+        this.cellMeta = props.cellMeta || {}
+        this.depsMap = props.depsMap || {}
     }
 
     removeListener(id) {
@@ -141,7 +142,7 @@ class SheetData {
                     console.log(matchingCellMeta.command)
                     if (error || expoCel === id || baseCel === id) {
                         value = '#ERROR'
-                    } else {        
+                    } else {
                         let expoVal = expoCel ? +this.getCellValue(expoCel) : expo
                         let baseVal = baseCel ? +this.getCellValue(baseCel) : base
 
@@ -164,9 +165,39 @@ class SheetData {
 
         return this.evaluateCell(id)
     }
+
+    serialize() {
+        writeToDisk({
+            cellMeta: this.cellMeta,
+            depsMap: this.depsMap
+        })
+    }
+
+    clear() {
+        this.cellMeta = {}
+        this.depsMap = {}
+    }
 }
 
-window._test = new SheetData()
+
+const writeToDisk = data => {
+    try {
+        localStorage.setItem('sheet', JSON.stringify(data))
+        return true
+    } catch (e) {
+        return false
+    }
+}
+
+const readFromDisk = () => {
+    try {
+        return JSON.parse(localStorage.getItem('sheet'))
+    } catch (e) {
+        return {}
+    }
+}
+
+window._test = new SheetData(readFromDisk())
 
 // Return singleton instance
 export default window._test

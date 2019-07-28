@@ -1,5 +1,6 @@
 import React from 'react'
 import sheetImage from './sheet.png'
+import sheetInstance from '../store'
 
 const dummyMenuName = ['File', 'Edit', 'View', 'Insert', 'Format', 'Data', 'Tools']
 
@@ -22,7 +23,7 @@ const Header = () => {
             </div>
         </div>
         <div className="action-items">
-            <div className="button">
+            <div className="button" onClick={() => sheetInstance.serialize()}>
                 Save
             </div>
             <div className="button">
