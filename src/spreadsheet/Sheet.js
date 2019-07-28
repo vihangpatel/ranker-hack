@@ -29,7 +29,7 @@ const Sheet = ({ cols, rows }) => {
 
 
                         return <tr key={rowIndex} >
-                            <td className="index-col"><div>{rowIndex}</div></td>
+                            <td className="index-col"><div>{rowIndex + 1}</div></td>
                             {
                                 colArray.map((__, colIndex) => {
                                     const id = `${rowIndex}-${colIndex}`
