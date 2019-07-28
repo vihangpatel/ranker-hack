@@ -86,3 +86,9 @@ $ npm start
 
 ### Sheet 
 ![Alt text](screenshots/home.png?raw=true "Sheet")
+
+### Save or Clear 
+![Alt text](screenshots/header.png?raw=true "Sheet")
+
+### Change number of columns & Rows 
+![Alt text](screenshots/footer.png?raw=true "Sheet")
