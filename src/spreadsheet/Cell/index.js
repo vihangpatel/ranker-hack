@@ -126,6 +126,7 @@ const Cell = ({ id, cellValue }) => {
 
 
     const parsedValue = parseCell(value)
+    
 
     const onFocus = () => {
         console.log('focus came')
