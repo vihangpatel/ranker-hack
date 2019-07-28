@@ -1,4 +1,5 @@
-import { catchClause } from "@babel/types";
+import preloadedData from '../data'
+import { DEBUG } from './utils';
 
 
 class SheetData {
@@ -173,9 +174,12 @@ class SheetData {
         })
     }
 
-    clear() {
+    clear(commitToDisk) {
         this.cellMeta = {}
         this.depsMap = {}
+
+        // If commit is passed as true, put it on disk
+        commitToDisk && this.serialize()
     }
 }
 
@@ -197,7 +201,20 @@ const readFromDisk = () => {
     }
 }
 
-window._test = new SheetData(readFromDisk())
+let dataToLoad = readFromDisk()
+
+if (Object.keys(dataToLoad) === 0) {
+    // if the user is landing for first time, show hime preloaded data
+    dataToLoad = preloadedData
+}
+
+const singletonInstance = new SheetData(dataToLoad)
+
+if (DEBUG) {
+
+    // expose store in singleton fashion
+    window.__store = singletonInstance
+}
 
 // Return singleton instance
-export default window._test
+export default singletonInstance

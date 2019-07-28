@@ -61,6 +61,7 @@ const Cell = ({ id, cellValue }) => {
             // Delete clicked
             case ([46].indexOf(event.keyCode) > -1): {
                 console.log('delete clicked')
+                highlightCells(value, false)
                 onEditFinish({ value: '' })
                 // After deleting focus the current cell because edit finish moves to next cell
                 tdRef.current.focus()
@@ -75,6 +76,7 @@ const Cell = ({ id, cellValue }) => {
             // backspace clicked
             case (event.keyCode === 8): {
                 if (!editable) {
+                    highlightCells(value, false)
                     onEditFinish({ value: '' })
                     tdRef.current.focus()
                 }
@@ -85,7 +87,7 @@ const Cell = ({ id, cellValue }) => {
 
                 if (!editable) {
                     // On div, when any key is stroked, it has to go to input & saved
-                    const firstChar =  event.keyCode === 187 ? '=' : String.fromCharCode(event.keyCode)
+                    const firstChar = event.keyCode === 187 ? '=' : String.fromCharCode(event.keyCode)
                     setValue(firstChar)
                     setEditable(true)
                 }
@@ -126,6 +128,7 @@ const Cell = ({ id, cellValue }) => {
     const parsedValue = parseCell(value)
 
     const onFocus = () => {
+        console.log('focus came')
         highlightCells(value, true)
     }
 
