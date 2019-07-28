@@ -110,7 +110,7 @@ class SheetData {
                                 const evaluatedVal = cellId !== id ? +this.getCellValue(cellId) : 0
                                 result = result + (!isNaN(evaluatedVal) ? evaluatedVal : 0)
                                 return result
-                            }, +staticVal)
+                            }, staticVal.reduce((sum, val) => sum + +val, 0))
                         } else {
                             value = '#ERROR'
                         }
@@ -123,9 +123,9 @@ class SheetData {
                             const evaluatedVal = cellId !== id ? +this.getCellValue(cellId) : 0
                             result = result + (!isNaN(evaluatedVal) ? evaluatedVal : 0)
                             return result
-                        }, +staticVal)
+                        }, staticVal.reduce((sum, val) => sum + +val, 0))
 
-                        value = value / ((cells || []).length + staticArgsCount)
+                        value = value / ((cells || []).length + staticVal.length)
 
                         // If static args count is zero, or no cells are there 
                         if (staticArgsCount === 0 && cells && cells.length === 0) {
@@ -133,6 +133,10 @@ class SheetData {
                         }
                         break;
                     }
+                case "POW":
+                case "POWER": {
+                    break;
+                }
                 default:
                     break;
             }

@@ -82,7 +82,7 @@ export const handleRange = (startCellId, endCellId) => {
     const startCell = extractCellId(startCellId);
     const endCell = extractCellId(endCellId);
 
-    if(!startCell || !endCell) {
+    if (!startCell || !endCell) {
         return []
     }
 
@@ -177,9 +177,13 @@ export const parseCell = str => {
     // for e.g. parsedOp =>[ "=sum(A10:A11,A10,20,30)", "sum" , "(A10:A11,A10,20,30)" ]
     if (parsedOp && parsedOp[1] && parsedOp[2]) {
 
-        const results = parsedOp[2]
+        const args = parsedOp[2]
             .replace(/\(|\)/g, "")
             .split(",")
+
+        let results = []
+
+        results = args
             .reduce(
                 (result, _) => {
                     let range = _.split(":");
@@ -200,16 +204,16 @@ export const parseCell = str => {
 
                         default: {
                             if (!isNaN(_)) {
-                                result.staticVal += +_;
-                                result.staticArgsCount++;
+                                result.staticVal.push(_);
                             }
                         }
                     }
 
                     return result;
                 },
-                { cells: [], staticVal: 0, staticArgsCount: 0 }
+                { cells: [], staticVal: [] }
             );
+
 
         cellValue.command = {
             type: parsedOp[1].toUpperCase(),
