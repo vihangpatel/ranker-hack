@@ -4,7 +4,7 @@ import sheetInstance from '../store'
 
 const dummyMenuName = ['File', 'Edit', 'View', 'Insert', 'Format', 'Data', 'Tools']
 
-const Header = () => {
+const Header = ({ triggerRerender }) => {
 
     return <header>
         <div className="logo-container">
@@ -26,7 +26,11 @@ const Header = () => {
             <div className="button" onClick={() => sheetInstance.serialize()}>
                 Save
             </div>
-            <div className="button">
+            <div className="button" onClick={() => {
+                // Clear the entire sheet
+                sheetInstance.clear()
+                triggerRerender && triggerRerender()
+            }}>
                 Clear
             </div>
         </div>

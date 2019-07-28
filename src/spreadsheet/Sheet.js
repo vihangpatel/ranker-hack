@@ -1,5 +1,5 @@
 
-import React, { useEffect } from 'react'
+import React, { useState } from 'react'
 import Cell from '../spreadsheet/Cell'
 import Header from '../spreadsheet/Header'
 
@@ -10,10 +10,13 @@ const Sheet = ({ cols, rows }) => {
 
 
     const colArray = [...Array(cols)]
+    const [timeStamp, setTimeStamp] = useState(Date.now())
+
+    const triggerRerender = () => setTimeStamp(Date.now())
 
 
-    return <div className='sheet-body'>
-        <Header />
+    return <div className='sheet-body' key={timeStamp}>
+        <Header triggerRerender={triggerRerender} />
         <div className="sheet-area">
             <table>
                 <tbody>

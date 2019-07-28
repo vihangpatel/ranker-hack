@@ -184,7 +184,7 @@ class SheetData {
         this.depsMap = {}
 
         // If commit is passed as true, put it on disk
-        commitToDisk && this.serialize()
+        commitToDisk && writeToDisk(null)
     }
 }
 
