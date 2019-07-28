@@ -1,0 +1,56 @@
+
+.sheet-table header {
+    display: flex;
+    padding: 10px;
+}
+
+.sheet-table header .menu-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.sheet-table header .sheet-name-container {
+    color: rgba(0,0,0,0.5); 
+}
+
+.sheet-table header .menu {
+    color: rgba(0,0,0,0.75);
+    font-size: 14px;
+}
+
+.sheet-table header .menu-item {
+    margin-right: 15px;
+    cursor: pointer;
+
+}
+
+.sheet-table header .action-items {
+    display: flex;
+    align-items: center;
+}
+
+.sheet-table header .button {
+    padding: 7px 15px;
+    margin: 10px;
+    border-radius: 4px;
+    color: white;
+    background: #188038;
+    cursor: pointer;
+}
+
+.sheet-table header .button:hover {
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+    .sheet-table header .menu  {
+      display: none;
+    }
+
+    .sheet-table header .button {
+        padding: 5px 10px;
+        margin: 5px;
+    }
+  }

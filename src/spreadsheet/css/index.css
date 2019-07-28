@@ -1,0 +1,60 @@
+@import './cell.css';
+@import './header.css';
+@import './footer.css';
+
+#root {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+.sheet-table {
+    width: 100%;
+    height: 100%;
+}
+
+.sheet-table table {
+    border-collapse: collapse;
+}
+
+.sheet-table table col {
+    width: 80px;
+}
+
+.sheet-table table  th {
+    background: rgb(248, 249, 250);
+    font-weight: 100;
+    font-size: 11px;
+    line-height: 22px;
+    border: 1px solid rgba(0,0,0,0.35);
+    color: rgba(0,0,0,0.65);
+}
+
+.sheet-table table thead tr {
+    display: inline-flex;
+}
+
+.sheet-table .sheet-area {
+    overflow: scroll;
+    height: 100vh;
+    width: 100vw;
+}
+
+.sheet-table .sheet-area .index-col {
+    background: rgb(248, 249, 250);
+    font-weight: 100;
+    font-size: 11px;
+    border: 1px solid rgba(0,0,0,0.35);
+    color: rgba(0,0,0,0.65);
+    text-align: center;
+}
+
+.sheet-table .sheet-area .index-col div {
+    padding: 0 12px;
+}
+
+@media only screen and (max-width: 600px) {
+    .sheet-table header .menu  {
+      display: none;
+    }   
+  }
