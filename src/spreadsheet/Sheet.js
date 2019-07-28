@@ -7,17 +7,33 @@ import Footer from '../spreadsheet/Footer'
 import { convertToABCD } from './utils'
 import sheetInstance from './store'
 
-const Sheet = ({ cols, rows }) => {
+const INITIAL_COLS = 26
+const INITIAL_ROWS = 100
 
+const Sheet = () => {
+
+    const [{ cols, rows }, setSize] = useState({
+        cols: INITIAL_COLS,
+        rows: INITIAL_ROWS
+    })
 
     const colArray = [...Array(cols)]
     const [timeStamp, setTimeStamp] = useState(Date.now())
 
-    const triggerRerender = () => setTimeStamp(Date.now())
+    const changeSheetDimension =
+        size => {
+            setSize(size)
+            reset()
+        }
+
+    const reset = () => {
+        sheetInstance.clear()
+        setTimeStamp(Date.now())
+    }
 
 
     return <div className='sheet-body' key={timeStamp}>
-        <Header triggerRerender={triggerRerender} />
+        <Header reset={reset} />
         <div className="sheet-area">
             <table>
                 <tbody>
@@ -50,7 +66,7 @@ const Sheet = ({ cols, rows }) => {
                 </tbody>
             </table>
         </div>
-                    <Footer/>
+        <Footer changeSheetDimension={changeSheetDimension} />
     </div>
 
 }

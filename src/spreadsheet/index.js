@@ -4,8 +4,7 @@ import Sheet from './Sheet'
 import './css/index.css'
 
 
-const COLS = 26
-const ROWS = 100
+
 
 class SpreadSheet extends Component {
     constructor(props) {
@@ -19,7 +18,7 @@ class SpreadSheet extends Component {
                 <tbody></tbody>
                
             </table>
-            <Sheet cols={COLS} rows={ROWS}/>
+            <Sheet/>
         </div>
     }
 }

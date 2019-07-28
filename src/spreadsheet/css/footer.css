@@ -28,6 +28,7 @@ footer .row-col-inputs input {
 footer .small-button {
     padding: 2px 5px;
     color: white;
+    cursor: pointer;
     background: #188038;
 }
 
