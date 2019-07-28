@@ -208,7 +208,7 @@ const readFromDisk = () => {
 
 let dataToLoad = readFromDisk()
 
-if (Object.keys(dataToLoad) === 0) {
+if (Object.keys(dataToLoad).length === 0) {
     // if the user is landing for first time, show hime preloaded data
     dataToLoad = preloadedData
 }
