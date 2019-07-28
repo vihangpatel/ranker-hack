@@ -207,7 +207,7 @@ export const parseCell = str => {
                                 }
 
                                 default: {
-                                    if (!isNaN(_)) {
+                                    if (!isNaN(_) && _.trim() !== '') {
                                         result.staticVal.push(_);
                                     }
                                 }
