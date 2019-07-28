@@ -105,11 +105,16 @@ class SheetData {
             switch (type) {
                 case "SUM":
                     {
-                        value = (cells || []).reduce((result, cellId) => {
-                            const evaluatedVal = cellId !== id ? +this.getCellValue(cellId) : 0
-                            result = result + (!isNaN(evaluatedVal) ? evaluatedVal : 0)
-                            return result
-                        }, +staticVal)
+                        if (cells && cells.length > 0) {
+                            value = (cells || []).reduce((result, cellId) => {
+                                const evaluatedVal = cellId !== id ? +this.getCellValue(cellId) : 0
+                                result = result + (!isNaN(evaluatedVal) ? evaluatedVal : 0)
+                                return result
+                            }, +staticVal)
+                        } else {
+                            value = '#ERROR'
+                        }
+
                         break;
                     }
                 case "AVERAGE":
@@ -121,6 +126,11 @@ class SheetData {
                         }, +staticVal)
 
                         value = value / ((cells || []).length + staticArgsCount)
+
+                        // If static args count is zero, or no cells are there 
+                        if (staticArgsCount === 0 && cells && cells.length === 0) {
+                            value = '#ERROR'
+                        }
                         break;
                     }
                 default:
