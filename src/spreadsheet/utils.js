@@ -21,9 +21,9 @@ export const highlightCell = ({ id, bHighlight }) => {
 
     if (innerCellDiv) {
         if (bHighlight) {
-            innerCellDiv.classList.add('highlight')
+            innerCellDiv.parentNode.style.border = `2px dashed ${getRandomColor()}`
         } else {
-            innerCellDiv.classList.remove('highlight')
+            innerCellDiv.parentNode.style.border = '1px solid rgba(0,0,0,0.2) '
         }
 
         return true
@@ -194,13 +194,14 @@ export const parseCell = str => {
                         default: {
                             if (!isNaN(_)) {
                                 result.staticVal += +_;
+                                result.staticArgsCount++;
                             }
                         }
                     }
 
                     return result;
                 },
-                { cells: [], staticVal: 0 }
+                { cells: [], staticVal: 0, staticArgsCount: 0 }
             );
 
         cellValue.command = {
@@ -210,3 +211,7 @@ export const parseCell = str => {
     }
     return cellValue;
 }
+
+export const getRandomColor = () => '#' + '0123456789abcdef'.split('').map(function (v, i, a) {
+    return i > 5 ? null : a[Math.floor(Math.random() * 16)]
+}).join('');

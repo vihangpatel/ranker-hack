@@ -44,7 +44,7 @@ class SheetData {
             this.depsMap = (command.cells || []).reduce((result, dependentCellId) => {
 
                 // if cell is referring to itself ignore
-                if(dependentCellId === id) {
+                if (dependentCellId === id) {
                     return result
                 }
 
@@ -64,7 +64,7 @@ class SheetData {
             for (let i = 0; i < dependentCellId.length; i++) {
 
                 // If the same id is there, exclude it
-                if(dependentCellId[i] === id) {
+                if (dependentCellId[i] === id) {
                     continue;
                 }
                 // Get the meta information of the cell which is dependent on the current id
@@ -101,7 +101,7 @@ class SheetData {
 
         let value = ''
         if (matchingCellMeta && matchingCellMeta.command) {
-            const { type, cells, staticVal } = matchingCellMeta.command
+            const { type, cells, staticVal, staticArgsCount } = matchingCellMeta.command
             switch (type) {
                 case "SUM":
                     {
@@ -118,7 +118,7 @@ class SheetData {
                             return result
                         }, +staticVal)
 
-                        value = value / (cells || []).length
+                        value = value / ((cells || []).length + staticArgsCount)
                         break;
                     }
                 default:

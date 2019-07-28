@@ -94,12 +94,12 @@ const Cell = ({ id, cellValue }) => {
     }
 
     const onEditFinish = ({ value: newValue, keyCode = 40 }) => {
-        highlightCells(value, false)
+        // highlightCells(value, false)
         setValue(newValue)
         setEditable(false)
         commitValueToStore({ value: newValue })
         navigateSheet({ id, keyCode })
-        highlightCells(newValue, true)
+        // highlightCells(newValue, true)
     }
 
     const highlightCells = (value, bHighlight) => {
