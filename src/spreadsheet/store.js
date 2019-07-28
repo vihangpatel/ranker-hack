@@ -64,6 +64,9 @@ class SheetData {
                     // call the set state method of the cell to update the value
                     targetCellMeta.callback()
                 }
+
+                // chain if any event listener is chained
+                this.executeEventListeners(dependentCellId[i])
             }
         }
     }

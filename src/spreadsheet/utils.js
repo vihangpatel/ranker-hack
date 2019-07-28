@@ -204,7 +204,7 @@ export const parseCell = str => {
             );
 
         cellValue.command = {
-            type: parsedOp[1],
+            type: parsedOp[1].toUpperCase(),
             ...results
         }
     }
