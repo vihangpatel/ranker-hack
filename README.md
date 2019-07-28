@@ -1,68 +1,85 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ranker Hack
 
-## Available Scripts
+Ranker Hack is a basic version of Google spreadsheet.
+Its implementation can be found at [Live Here](https://ranker-hack.herokuapp.com/)
 
-In the project directory, you can run:
+# Features
+  - Highly Dynamic in nature
+  - Lets use basic features like SUM, AVERAGE, POWER ( case in-sensitive )
+  - Can support more mathematical functions easily 
+  - Highlights cells which will be used in fn evaluation
+  - Save & Retrieve the version ( Uses local storage )
+  
+### Allowed versions of =SUM
+| fn   |        Evaluation |
+| :----- |:------|
+| =sum(A1:A20) | cells from A1 to A20|
+| =sum(D10:B2) | cells from B2 to D10, regardless of their sequnce of cols & rows|
+| =sum(1, 2, 3) | supports normal addition as well
+| =sum(A1, A2, A4:A5, 10) | Hybrid mode of evaluation |
+| =sum(A1, A2 | Evaluates incomplete probable valid commands |
+ | =sum( | #ERROR |
+| =sum() | #ERROR |
+| =sum) | #ERROR |
 
-### `npm start`
+### Allowed versions of =AVERAGE
+| fn   |        Evaluation |
+| :----- |:------|
+| =average(A1:A20) | cells from A1 to A20|
+| =average(D10:B2) | cells from B2 to D10, regardless of their sequnce of cols & rows|
+| =average(1, 2, 3) | supports normal addition as well
+| =average(A1, A2, A4:A8, 10) | Hybrid mode of evaluation, considers 8 items total with cells A1, A2, A4, A5, A6, A7, A8 and value 10 |
+| =average(A1, A2 | Evaluates incomplete probable lid commvaands |
+ | =average( | #ERROR |
+| =average() | #ERROR |
+| =average) | #ERROR |
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Allowed versions of =POW or =POWER
+| fn   |        Evaluation |
+| :----- |:------|
+| =pow(A1, 2) | cell value A1 with expo value 2|
+| =pow(A1, B2) | cell value A1 with expo value B2|
+| =pow() | #ERROR|
+| =pow(A1, A2, 2) | #ERROR|
+  
+# Scope of Improvments
+  - Sticky Columns & Row headers
+  - Highlighting corresponding column & header
+  - Supporting fn version =SUM(A) which will sum entire column
+  - Drag & Select
+  - Copy and paste of cell value ( currently one need to press enter and then select the cell value & paste it to some other cell after pressing enter to the destination cell )
+  - Connecting with API
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
 
-### `npm test`
+### Tech
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Ranker Hack uses a number of open source projects to work properly
 
-### `npm run build`
+* [ReactJS] - Client side popular JS Framework!
+* [CSS] - Styling of the app
+* [create-react-app] - Quickly lets bootstrap the ReactJS app.
+* [node.js] - evented I/O for serving React App
+* [Express] - fast node.js network app framework
+* [Heroku] - Where the live application is deployed
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+And of course Ranker Hack itself is open source on a GitHub
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+### Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Ranker Hack requires [Node.js](https://nodejs.org/) v10+ to run.
 
-### `npm run eject`
+Install the dependencies and devDependencies and start the server.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```sh
+$ cd tableiq
+$ npm install -d
+$ npm run start-dev
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+For production environments...
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```sh
+$ npm install --production
+$ npm run build
+$ npm start
+```
