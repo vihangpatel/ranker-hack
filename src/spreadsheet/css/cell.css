@@ -67,3 +67,15 @@
     padding: 4px 8px;
     z-index: 2;
 }
+
+.sheet-table .sheet-body .autosuggestion-box .command-palette {
+    margin-top: 5px;
+}
+
+.sheet-table .sheet-body .autosuggestion-box .command {
+    font-weight: bold;
+}
+
+.sheet-table .sheet-body .autosuggestion-box .command-description {
+    font-size: 11px;
+}
