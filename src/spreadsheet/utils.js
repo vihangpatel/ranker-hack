@@ -22,8 +22,10 @@ export const highlightCell = ({ id, bHighlight }) => {
     if (innerCellDiv) {
         if (bHighlight) {
             innerCellDiv.parentNode.style.border = `2px dashed ${getRandomColor()}`
+            innerCellDiv.parentNode.style['box-shadow'] = '1px 1px 5px 0px rgba(0,0,0,0.75);'
         } else {
-            innerCellDiv.parentNode.style.border = '1px solid rgba(0,0,0,0.2) '
+            innerCellDiv.parentNode.style.border = '1px solid rgba(0,0,0,0.2)'
+            innerCellDiv.parentNode.style['box-shadow'] = 'none'
         }
 
         return true
