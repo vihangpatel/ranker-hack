@@ -200,7 +200,7 @@ const writeToDisk = data => {
 
 const readFromDisk = () => {
     try {
-        return JSON.parse(localStorage.getItem('sheet'))
+        return JSON.parse(localStorage.getItem('sheet')) || {}
     } catch (e) {
         return {}
     }
