@@ -3,6 +3,9 @@
 Ranker Hack is a basic version of Google spreadsheet.
 Its implementation can be found at [Live Here](https://ranker-hack.herokuapp.com/)
 
+### Sheet 
+![Alt text](screenshots/home.png?raw=true "Sheet")
+
 # Features
   - Highly Dynamic in nature
   - Lets use basic features like SUM, AVERAGE, POWER ( case in-sensitive )
@@ -83,9 +86,6 @@ $ npm install --production
 $ npm run build
 $ npm start
 ```
-
-### Sheet 
-![Alt text](screenshots/home.png?raw=true "Sheet")
 
 ### Save or Clear 
 ![Alt text](screenshots/header.png?raw=true "Sheet")
