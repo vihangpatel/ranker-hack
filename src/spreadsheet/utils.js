@@ -190,6 +190,7 @@ export const parseCell = str => {
                     }
 
                     switch (true) {
+                        // evaluate range
                         case range && range.length >= 2: {
                             result.cells = result.cells.concat(
                                 handleRange(range[0], range[1])

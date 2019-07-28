@@ -84,7 +84,9 @@ const Cell = ({ id, cellValue }) => {
             default: {
 
                 if (!editable) {
-                    setValue(String.fromCharCode(event.keyCode))
+                    // On div, when any key is stroked, it has to go to input & saved
+                    const firstChar =  event.keyCode === 187 ? '=' : String.fromCharCode(event.keyCode)
+                    setValue(firstChar)
                     setEditable(true)
                 }
             }
