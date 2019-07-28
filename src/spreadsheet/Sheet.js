@@ -2,6 +2,7 @@
 import React, { useState } from 'react'
 import Cell from '../spreadsheet/Cell'
 import Header from '../spreadsheet/Header'
+import Footer from '../spreadsheet/Footer'
 
 import { convertToABCD } from './utils'
 import sheetInstance from './store'
@@ -49,6 +50,7 @@ const Sheet = ({ cols, rows }) => {
                 </tbody>
             </table>
         </div>
+                    <Footer/>
     </div>
 
 }
