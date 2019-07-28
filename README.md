@@ -7,7 +7,7 @@ Its implementation can be found at [Live Here](https://ranker-hack.herokuapp.com
 ![Alt text](screenshots/home.png?raw=true "Sheet")
 
 ### Sheet in Mobile View 
-![Alt text](screenshots/mobileview.png?raw=true "Sheet")
+![Alt text](screenshots/mobileview.png =250x)
 
 # Features
   - Highly Dynamic in nature
