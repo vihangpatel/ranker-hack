@@ -36,16 +36,21 @@ const Cell = ({ id, cellValue }) => {
     const onKeyDown = event => {
         console.log('\n\n\n td down ', event.keyCode)
         switch (true) {
+
+            // on tab clicked, set editable state to false
             case event.keyCode === 9: {
                 setEditable(false)
                 return
             }
+
+            // If navigation keys, up, down, left, right arrows are clicked
             case !editable && [37, 38, 39, 40].indexOf(event.keyCode) > -1: {
                 navigateSheet({ id, keyCode: event.keyCode })
-                event.preventDefault()
+                event.preventDefault() // Prevent default to browser
                 return
             }
 
+            // On press, make it editable, show input box
             case [13].indexOf(event.keyCode) > -1 || event.which === 13: {
                 if (!editable) {
                     setEditable(true)
@@ -53,24 +58,33 @@ const Cell = ({ id, cellValue }) => {
                 return
             }
 
+            // Delete clicked
             case ([46].indexOf(event.keyCode) > -1): {
-                setValue('')
+                console.log('delete clicked')
+                onEditFinish({ value: '' })
+                // After deleting focus the current cell because edit finish moves to next cell
+                tdRef.current.focus()
                 return
             }
 
+            // various keys like ctrl, shift
             case ([16, 17, 18, 19, 20, 27, 33, 34, 35, 36, 45].indexOf(event.keyCode) > -1): {
                 return
             }
 
+            // backspace clicked
             case (event.keyCode === 8): {
-                setValue(value.substr(0, value.length - 1))
+                if (!editable) {
+                    onEditFinish({ value: '' })
+                    tdRef.current.focus()
+                }
                 return
             }
 
             default: {
 
                 if (!editable) {
-                    setValue(value + String.fromCharCode(event.keyCode))
+                    setValue(String.fromCharCode(event.keyCode))
                     setEditable(true)
                 }
             }
