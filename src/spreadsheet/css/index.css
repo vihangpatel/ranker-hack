@@ -1,9 +1,18 @@
 @import './cell.css';
 @import './header.css';
 
+#root {
+    height: 100vh;
+    width: 100vw;
+}
+
+.sheet-table {
+    width: 100%;
+    height: 100%;
+}
+
 .sheet-table table {
     border-collapse: collapse;
-
 }
 
 .sheet-table table col {
@@ -22,3 +31,15 @@
 .sheet-table table thead tr {
     display: inline-flex;
 }
+
+.sheet-table .sheet-area {
+    overflow: scroll;
+    height: 100vh;
+    width: 100vw;
+}
+
+@media only screen and (max-width: 600px) {
+    .sheet-table header .menu  {
+      display: none;
+    }   
+  }

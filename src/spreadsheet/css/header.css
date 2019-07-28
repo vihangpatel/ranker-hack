@@ -39,3 +39,14 @@
     background: #188038;
     cursor: pointer;
 }
+
+@media only screen and (max-width: 600px) {
+    .sheet-table header .menu  {
+      display: none;
+    }
+
+    .sheet-table header .button {
+        padding: 5px 10px;
+        margin: 5px;
+    }
+  }
