@@ -40,6 +40,10 @@
     cursor: pointer;
 }
 
+.sheet-table header .button:hover {
+    font-weight: bold;
+}
+
 @media only screen and (max-width: 600px) {
     .sheet-table header .menu  {
       display: none;
