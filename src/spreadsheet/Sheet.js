@@ -8,32 +8,30 @@ import { convertToABCD } from './utils'
 const Sheet = ({ cols, rows }) => {
 
 
+    const colArray = [...Array(cols)]
 
 
     return <div className='sheet-body'>
         <Header />
-        <div className="sheet-header">
-            <table>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
         <div className="sheet-area">
             <table>
                 <tbody>
                     <tr>
+                        <th></th>
                         {
 
-                            [...Array(cols)].map((_, colIndex) => <th key={colIndex} id={`th-${colIndex}`}>{convertToABCD(colIndex)}</th>)
+                            colArray.map((_, colIndex) => _ === '__' ?
+                                <th key={_}></th> :
+                                <th key={colIndex} id={`th-${colIndex}`}>{convertToABCD(colIndex)}</th>)
                         }
                     </tr>
                     {[...Array(rows)].map((_, rowIndex) => {
 
 
-                        return <tr key={rowIndex}   >
+                        return <tr key={rowIndex} >
+                            <td className="index-col"><div>{rowIndex}</div></td>
                             {
-                                [...Array(cols)].map((__, colIndex) => {
+                                colArray.map((__, colIndex) => {
                                     const id = `${rowIndex}-${colIndex}`
                                     return <Cell
                                         key={id}

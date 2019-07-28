@@ -39,6 +39,19 @@
     width: 100vw;
 }
 
+.sheet-table .sheet-area .index-col {
+    background: rgb(248, 249, 250);
+    font-weight: 100;
+    font-size: 11px;
+    border: 1px solid rgba(0,0,0,0.35);
+    color: rgba(0,0,0,0.65);
+    text-align: center;
+}
+
+.sheet-table .sheet-area .index-col div {
+    padding: 0 12px;
+}
+
 @media only screen and (max-width: 600px) {
     .sheet-table header .menu  {
       display: none;
