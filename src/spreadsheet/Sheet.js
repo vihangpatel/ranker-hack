@@ -1,6 +1,7 @@
 
 import React, { useEffect } from 'react'
 import Cell from '../spreadsheet/Cell'
+import Header from '../spreadsheet/Header'
 
 import { convertToABCD } from './utils'
 
@@ -10,10 +11,11 @@ const Sheet = ({ cols, rows }) => {
 
 
     return <div className='sheet-body'>
+        <Header />
         <div className="sheet-header">
             <table>
                 <tbody>
-                    
+
                 </tbody>
             </table>
         </div>
