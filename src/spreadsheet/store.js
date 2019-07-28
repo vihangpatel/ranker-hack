@@ -6,8 +6,13 @@ class SheetData {
 
     constructor(props) {
 
+        // These could have been made private
         this.cellMeta = props.cellMeta || {}
         this.depsMap = props.depsMap || {}
+    }
+
+    getCellMeta(id) {
+        return this.cellMeta[id]
     }
 
     removeListener(id) {

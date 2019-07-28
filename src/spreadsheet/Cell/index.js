@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import CellInput from './input'
 
 import { navigateSheet, parseCell, highlightCell } from '../utils'
@@ -11,6 +11,15 @@ const Cell = ({ id, cellValue }) => {
     const [value, setValue] = useState(cellValue || '')
     const [editable, setEditable] = useState(false)
     const [timeStamp, setTimeStamp] = useState(Date.now())
+
+    useEffect(() => {
+        // To register change event on the dependent cells
+        // Because after serialization, callback methods are lost
+        const cellMeta = sheetDataInstance.getCellMeta(id)
+        if (cellMeta && cellMeta.command && cellMeta.command.cells) {
+            commitValueToStore({ value })
+        }
+    }, [])
 
     // Just to avoid linting problems
     void timeStamp
@@ -126,7 +135,7 @@ const Cell = ({ id, cellValue }) => {
 
 
     const parsedValue = parseCell(value)
-    
+
 
     const onFocus = () => {
         console.log('focus came')
