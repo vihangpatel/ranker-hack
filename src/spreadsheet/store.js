@@ -42,6 +42,12 @@ class SheetData {
         if (command && command.cells instanceof Array) {
             // Add all dependent cells
             this.depsMap = (command.cells || []).reduce((result, dependentCellId) => {
+
+                // if cell is referring to itself ignore
+                if(dependentCellId === id) {
+                    return result
+                }
+
                 // Add the current cell id
                 !result[dependentCellId] && (result[dependentCellId] = [])
                 result[dependentCellId].push(id)
@@ -56,6 +62,11 @@ class SheetData {
         // If any dependency is there   
         if (dependentCellId instanceof Array) {
             for (let i = 0; i < dependentCellId.length; i++) {
+
+                // If the same id is there, exclude it
+                if(dependentCellId[i] === id) {
+                    continue;
+                }
                 // Get the meta information of the cell which is dependent on the current id
                 const targetCellMeta = this.cellMeta[dependentCellId[i]]
 
@@ -95,7 +106,7 @@ class SheetData {
                 case "SUM":
                     {
                         value = + (cells || []).reduce((result, cellId) => {
-                            result = result + +this.getCellValue(cellId)
+                            result = result + (cellId !== id ? +this.getCellValue(cellId) : 0)
                             return result
                         }, +staticVal)
                         break;
@@ -103,7 +114,7 @@ class SheetData {
                 case "AVERAGE":
                     {
                         value = (cells || []).reduce((result, cellId) => {
-                            result = result + +this.getCellValue(cellId)
+                            result = result + (cellId !== id ? +this.getCellValue(cellId) : 0)
                             return result
                         }, +staticVal)
 

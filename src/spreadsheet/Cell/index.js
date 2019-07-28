@@ -8,7 +8,7 @@ import sheetDataInstance from '../store'
 const Cell = ({ id, cellValue }) => {
 
     const tdRef = React.createRef()
-    const [value, setValue] = useState(cellValue)
+    const [value, setValue] = useState(cellValue || '')
     const [editable, setEditable] = useState(false)
     const [timeStamp, setTimeStamp] = useState(Date.now())
 
@@ -93,17 +93,16 @@ const Cell = ({ id, cellValue }) => {
         !editable && event.keyCode === 32 && event.preventDefault()
     }
 
-    const onEditFinish = ({ value, keyCode = 40 }) => {
-        setValue(value)
+    const onEditFinish = ({ value: newValue, keyCode = 40 }) => {
+        highlightCells(value, false)
+        setValue(newValue)
         setEditable(false)
-        commitValueToStore({ value })
+        commitValueToStore({ value: newValue })
         navigateSheet({ id, keyCode })
-
-        setTimeout(() => highlightCells(true), 5)
-
+        highlightCells(newValue, true)
     }
 
-    const highlightCells = bHighlight => {
+    const highlightCells = (value, bHighlight) => {
         const { command } = parseCell(value)
 
         if (command && command.cells instanceof Array) {
@@ -119,25 +118,23 @@ const Cell = ({ id, cellValue }) => {
         }
 
         sheetDataInstance.setCellValue(id, parsedValuesObj)
-
-        highlightCells(false)
     }
 
 
     const parsedValue = parseCell(value)
 
     const onFocus = () => {
-        console.log('td focus')
-        commitValueToStore({ value })
+        highlightCells(value, true)
     }
 
     const onBlur = () => {
-        //highlightCells(false)
+        highlightCells(value, false)
     }
 
 
     return <td tabIndex={0} id={`cell-${id}`} ref={tdRef}
         onBlur={onBlur}
+        onFocus={onFocus}
         onKeyDown={onKeyDown}
     >
         {
